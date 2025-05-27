@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+
+  policy-service:
+    build: ./Policy
+    environment:
+      - MongoSettings__ConnectionString=mongodb://intelligent_leakey:27017
+      - MongoSettings__DatabaseName=insurance
+      - MongoSettings__PoliciesCollectionName=Policies
+    networks:
+      - backend
+    ports:
+      - "5001:80"
+
+  claim-service:
+    build: ./Claim
+    environment:
+      - MongoSettings__ConnectionString=mongodb://intelligent_leakey:27017
+      - MongoSettings__DatabaseName=insurance
+      - MongoSettings__ClaimsCollectionName=Claims
+    networks:
+      - backend
+    ports:
+      - "5002:80"
+
+networks:
+  backend:
+    external: true

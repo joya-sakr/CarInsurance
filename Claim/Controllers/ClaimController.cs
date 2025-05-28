@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Claim.Domain;
+using MongoDB.Bson;
 
 namespace Claim.Controller
 {
@@ -16,8 +17,17 @@ namespace Claim.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> createClaim([FromBody] ClaimDomain claim)
+        public async Task<IActionResult> createClaim(ClaimDomain claim)
         {
+            var claim = new ClaimDomain
+            {
+                Description = claimDto.Description
+            };
+            //claim.Description = claimDto.Description;
+            //var claim = new ClaimDomain();
+            // claim.ClaimId = ObjectId.GenerateNewId().ToString();
+            // claim.Insured.Id = ObjectId.GenerateNewId().ToString();
+            // claim.Notes[0].Id = ObjectId.GenerateNewId().ToString();
             await _claims.InsertOneAsync(claim);
             return CreatedAtAction(nameof(getClaim), new { id = claim.ClaimId }, claim);
         }

@@ -1,12 +1,21 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Policy.Domain;
+using Policy.Application;
+using Policy.Controller;
+// using Infrastructure;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure MongoDB settings
 builder.Services.Configure<MongoSettings>(
     builder.Configuration.GetSection("MongoSettings"));
+
 
 // Register MongoClient
 builder.Services.AddSingleton<IMongoClient>(sp =>
@@ -30,6 +39,11 @@ builder.Services.AddScoped<IMongoCollection<PolicyDomain>>(sp =>
     var database = sp.GetRequiredService<IMongoDatabase>();
     return database.GetCollection<PolicyDomain>(settings.PoliciesCollectionName);
 });
+
+
+builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddScoped<IPolicyRepository, PolicyImplementation>();
+
 
 // Add controllers and Swagger
 builder.Services.AddControllers();

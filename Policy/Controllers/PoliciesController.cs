@@ -1,58 +1,69 @@
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Policy.Domain;
+using Policy.Application;
+using MongoDB.Bson;
 
-namespace Policy.Controllers
+namespace Policy.Controller
 {
     [ApiController]
     [Route("api/[controller]")]
     public class PoliciesController : ControllerBase
     {
-        private readonly IMongoCollection<PolicyDomain> _policies;
+        private readonly IPolicyRepository _policyRepository;
 
-        public PoliciesController(IMongoCollection<PolicyDomain> policies)
+        public PoliciesController(IPolicyRepository policyRepository)
         {
-            _policies = policies;
+            _policyRepository = policyRepository;
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreatePolicy([FromBody] PolicyDomain policy)
         {
-            await _policies.InsertOneAsync(policy);
-            return CreatedAtAction(nameof(GetPolicy), new { id = policy.Id }, policy);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetPolicies()
-        {
-            var policies = await _policies.Find(_ => true).ToListAsync();
-            return Ok(policies);
+            policy.Id = ObjectId.GenerateNewId().ToString();
+            await _policyRepository.AddPolicyAsync(policy);
+            return CreatedAtAction(nameof(GetPolicyById), new { id = policy.Id }, policy);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPolicy(string id)
+        public async Task<IActionResult> GetPolicyById(string id)
         {
-            var policy = await _policies.Find(p => p.Id == id).FirstOrDefaultAsync();
+            var policy = await _policyRepository.GetPolicyByIdAsync(id);
             if (policy == null)
                 return NotFound();
+
             return Ok(policy);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePolicy(string id, [FromBody] PolicyDomain updated)
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllPolicies()
         {
-            var result = await _policies.ReplaceOneAsync(p => p.Id == id, updated);
-            if (result.MatchedCount == 0)
+            var policies = await _policyRepository.GetAllPoliciesAsync();
+            return Ok(policies);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePolicy(string id, [FromBody] PolicyDomain updatedPolicy)
+        {
+            var existingPolicy = await _policyRepository.GetPolicyByIdAsync(id);
+            if (existingPolicy == null)
                 return NotFound();
+
+            updatedPolicy.Id = id;
+            await _policyRepository.UpdatePolicyAsync(updatedPolicy);
             return Ok("Policy updated");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePolicy(string id)
         {
-            var result = await _policies.DeleteOneAsync(p => p.Id == id);
-            if (result.DeletedCount == 0)
+            var existingPolicy = await _policyRepository.GetPolicyByIdAsync(id);
+            if (existingPolicy == null)
                 return NotFound();
+
+            await _policyRepository.DeletePolicyAsync(id);
             return Ok("Policy deleted");
         }
     }

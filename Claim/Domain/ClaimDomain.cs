@@ -8,7 +8,7 @@ namespace Claim.Domain
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string ClaimId { get; set; } = null!;
+        public string ClaimId { get; set; }
 
         [Required]
         public string PolicyId { get; set; } = null!;

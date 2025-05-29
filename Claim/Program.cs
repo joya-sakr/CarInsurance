@@ -2,6 +2,9 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Claim.Controller;
 using Claim.Domain;
+using System.Reflection;
+using MediatR;
+using Claim.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +35,11 @@ builder.Services.AddScoped<IMongoCollection<ClaimDomain>>(sp =>
     return database.GetCollection<ClaimDomain>(settings.ClaimsCollectionName);
 });
 
+//  MediatR setup for version 11
+builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddScoped<IClaimRepository, ClaimImplementation>();
+
+
 // Add controllers and Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -41,5 +49,6 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
 app.MapControllers();
 app.Run();

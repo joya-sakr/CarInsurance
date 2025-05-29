@@ -1,0 +1,20 @@
+using MediatR;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Policy.Domain;
+
+public class GetAllPoliciesHandler : IRequestHandler<GetAllPoliciesQuery, IEnumerable<PolicyDomain>>
+{
+	private readonly IPolicyRepository _repository;
+
+	public GetAllPoliciesHandler(IPolicyRepository repository)
+	{
+		_repository = repository;
+	}
+
+	public async Task<IEnumerable<PolicyDomain>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
+	{
+		return await _repository.GetAllPoliciesAsync();
+	}
+}

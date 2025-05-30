@@ -5,17 +5,20 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class GetClaimsByPolicyIdHandler : IRequestHandler<GetClaimsByPolicyIdQuery, IEnumerable<ClaimDomain>>
-{
-	private readonly IClaimRepository _repository;
+namespace Claim.Application.Queries.GetByPolicyId {
 
-	public GetClaimsByPolicyIdHandler(IClaimRepository repository)
+	public class GetClaimsByPolicyIdHandler : IRequestHandler<GetClaimsByPolicyIdQuery, IEnumerable<ClaimDomain>>
 	{
-		_repository = repository;
-	}
+		private readonly IClaimRepository _repository;
 
-	public async Task<IEnumerable<ClaimDomain>> Handle(GetClaimsByPolicyIdQuery request, CancellationToken cancellationToken)
-	{
-		return await _repository.GetClaimsByPolicyIdAsync(request.PolicyId);
+		public GetClaimsByPolicyIdHandler(IClaimRepository repository)
+		{
+			_repository = repository;
+		}
+
+		public async Task<IEnumerable<ClaimDomain>> Handle(GetClaimsByPolicyIdQuery request, CancellationToken cancellationToken)
+		{
+			return await _repository.GetClaimsByPolicyIdAsync(request.PolicyId);
+		}
 	}
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 
-namespace Claim.Application
+namespace Claim.Infrastructure
 {
     public class ClaimImplementation : IClaimRepository
     {

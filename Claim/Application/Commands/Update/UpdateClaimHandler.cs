@@ -3,26 +3,30 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class UpdateClaimHandler : IRequestHandler<UpdateClaimCommand, bool>
+namespace Claim.Application.Commands.Update
 {
-    private readonly IClaimRepository _repository;
 
-    public UpdateClaimHandler(IClaimRepository repository)
+    public class UpdateClaimHandler : IRequestHandler<UpdateClaimCommand, bool>
     {
-        _repository = repository;
-    }
+        private readonly IClaimRepository _repository;
 
-    public async Task<bool> Handle(UpdateClaimCommand request, CancellationToken cancellationToken)
-    {
-        var existingClaim = await _repository.GetClaimByIdAsync(request.ClaimId);
-        if (existingClaim == null) return false;
+        public UpdateClaimHandler(IClaimRepository repository)
+        {
+            _repository = repository;
+        }
 
-        existingClaim.PolicyId = request.PolicyId;
-        existingClaim.Description = request.Description;
-        existingClaim.Amount = request.Amount;
-        existingClaim.ClaimDate = request.ClaimDate;
+        public async Task<bool> Handle(UpdateClaimCommand request, CancellationToken cancellationToken)
+        {
+            var existingClaim = await _repository.GetClaimByIdAsync(request.ClaimId);
+            if (existingClaim == null) return false;
 
-        await _repository.UpdateClaimAsync(existingClaim);
-        return true;
+            existingClaim.PolicyId = request.PolicyId;
+            existingClaim.Description = request.Description;
+            existingClaim.Amount = request.Amount;
+            existingClaim.ClaimDate = request.ClaimDate;
+
+            await _repository.UpdateClaimAsync(existingClaim);
+            return true;
+        }
     }
 }

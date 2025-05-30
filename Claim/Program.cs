@@ -4,7 +4,7 @@ using Claim.Controller;
 using Claim.Domain;
 using System.Reflection;
 using MediatR;
-using Claim.Application;
+using Claim.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

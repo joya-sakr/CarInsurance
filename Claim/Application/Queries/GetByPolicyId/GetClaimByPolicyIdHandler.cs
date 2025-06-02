@@ -1,11 +1,12 @@
 using Claim.Domain;
-using Claim.Application;
+using Claim.Infrastructure;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Claim.Application.Queries.GetByPolicyId {
+namespace Claim.Application.Queries.GetByPolicyId
+{
 
 	public class GetClaimsByPolicyIdHandler : IRequestHandler<GetClaimsByPolicyIdQuery, IEnumerable<ClaimDomain>>
 	{

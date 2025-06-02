@@ -1,4 +1,4 @@
-using Claim.Application;
+using Claim.Infrastructure;
 using Claim.Domain;
 using MediatR;
 using System.Threading;

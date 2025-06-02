@@ -2,20 +2,22 @@ using Claim.Application;
 using Claim.Domain;
 using MediatR;
 using System;
+using Claim.Infrastructure;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Claim.Application.Commands.Create { 
-
-public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, ClaimDomain>
+namespace Claim.Application.Commands.Create
 {
-    private readonly IClaimRepository _repository;
 
-    public CreateClaimHandler(IClaimRepository repository)
+    public class CreateClaimHandler : IRequestHandler<CreateClaimCommand, ClaimDomain>
     {
-        _repository = repository;
-    }
+        private readonly IClaimRepository _repository;
+
+        public CreateClaimHandler(IClaimRepository repository)
+        {
+            _repository = repository;
+        }
 
         public async Task<ClaimDomain> Handle(CreateClaimCommand request, CancellationToken cancellationToken)
         {

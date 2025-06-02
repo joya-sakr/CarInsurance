@@ -6,6 +6,9 @@ services:
     container_name: mongo
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
 
   claim-service:
     image: carinsurance-claim-service
@@ -13,7 +16,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017
+      - MongoSettings__ConnectionString=mongodb://admin:admin123@mongo:27017
 
   policy-service:
     image: carinsurance-policy-service
@@ -21,4 +24,4 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017
+      - MongoSettings__ConnectionString=mongodb://admin:admin123@mongo:27017

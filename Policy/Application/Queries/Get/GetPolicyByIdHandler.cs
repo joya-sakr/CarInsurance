@@ -18,7 +18,7 @@ namespace Policy.Application.Queries.Get
 
         public async Task<PolicyDomain> Handle(GetPolicyByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _repository.GetPolicyByIdAsync(request.Id);
+            return await _repository.GetPolicyByIdAsync(request.PolicyId);
         }
     }
 }

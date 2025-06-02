@@ -18,7 +18,7 @@ namespace Policy.Application.Commands.Update
 
         public async Task<bool> Handle(UpdatePolicyCommand request, CancellationToken cancellationToken)
         {
-            var existingPolicy = await _repository.GetPolicyByIdAsync(request.Id);
+            var existingPolicy = await _repository.GetPolicyByIdAsync(request.PolicyId);
             if (existingPolicy == null) return false;
 
             existingPolicy.PolicyNumber = request.PolicyNumber;

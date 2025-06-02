@@ -30,7 +30,7 @@ namespace Policy.Application.Commands.Create
             };
 
             await _policyRepository.AddPolicyAsync(policy);
-            return policy.Id;
+            return policy.PolicyId;
         }
     }
 }

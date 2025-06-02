@@ -9,7 +9,7 @@ namespace Policy.Domain
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = null!;
+        public string PolicyId { get; set; } 
 
         [Required]
         public string PolicyNumber { get; set; } = null!;

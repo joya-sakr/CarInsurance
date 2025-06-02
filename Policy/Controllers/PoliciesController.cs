@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Policy.Domain;
-using Policy.Application;
+using MongoDB.Driver;
+using Policy.Infrastructure;
 using MongoDB.Bson;
 
 namespace Policy.Controller
@@ -16,25 +17,23 @@ namespace Policy.Controller
             _policyRepository = policyRepository;
         }
 
-
         [HttpPost]
         public async Task<IActionResult> CreatePolicy([FromBody] PolicyDomain policy)
         {
-            policy.Id = ObjectId.GenerateNewId().ToString();
+            policy.PolicyId = ObjectId.GenerateNewId().ToString();
             await _policyRepository.AddPolicyAsync(policy);
-            return CreatedAtAction(nameof(GetPolicyById), new { id = policy.Id }, policy);
+            return CreatedAtAction(nameof(GetPolicyById), new { policyId = policy.PolicyId }, policy);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPolicyById(string id)
+        [HttpGet("{policyId}")]
+        public async Task<IActionResult> GetPolicyById(string policyId)
         {
-            var policy = await _policyRepository.GetPolicyByIdAsync(id);
+            var policy = await _policyRepository.GetPolicyByIdAsync(policyId);
             if (policy == null)
                 return NotFound();
 
             return Ok(policy);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetAllPolicies()
@@ -43,27 +42,26 @@ namespace Policy.Controller
             return Ok(policies);
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePolicy(string id, [FromBody] PolicyDomain updatedPolicy)
+        [HttpPut("{policyId}")]
+        public async Task<IActionResult> UpdatePolicy(string policyId, [FromBody] PolicyDomain updatedPolicy)
         {
-            var existingPolicy = await _policyRepository.GetPolicyByIdAsync(id);
+            var existingPolicy = await _policyRepository.GetPolicyByIdAsync(policyId);
             if (existingPolicy == null)
                 return NotFound();
 
-            updatedPolicy.Id = id;
+            updatedPolicy.PolicyId = policyId;
             await _policyRepository.UpdatePolicyAsync(updatedPolicy);
             return Ok("Policy updated");
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePolicy(string id)
+        [HttpDelete("{policyId}")]
+        public async Task<IActionResult> DeletePolicy(string policyId)
         {
-            var existingPolicy = await _policyRepository.GetPolicyByIdAsync(id);
+            var existingPolicy = await _policyRepository.GetPolicyByIdAsync(policyId);
             if (existingPolicy == null)
                 return NotFound();
 
-            await _policyRepository.DeletePolicyAsync(id);
+            await _policyRepository.DeletePolicyAsync(policyId);
             return Ok("Policy deleted");
         }
     }

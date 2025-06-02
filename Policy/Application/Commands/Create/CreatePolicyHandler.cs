@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Policy.Infrastructure;
 using Policy.Domain;
 
 namespace Policy.Application.Commands.Create

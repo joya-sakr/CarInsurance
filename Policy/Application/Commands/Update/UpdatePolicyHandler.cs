@@ -2,6 +2,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Policy.Domain;
+using Policy.Infrastructure;
 
 namespace Policy.Application.Commands.Update
 {

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Policy.Domain;
 using System.Linq.Expressions;
+using Policy.Infrastructure;
 
 namespace Policy.Application.Queries.List
 {

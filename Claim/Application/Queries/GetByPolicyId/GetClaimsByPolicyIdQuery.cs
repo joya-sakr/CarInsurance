@@ -1,6 +1,7 @@
 using Claim.Domain;
 using MediatR;
 using System.Collections.Generic;
+using Policy.Domain; 
 
 namespace Claim.Application.Queries.GetByPolicyId
 {

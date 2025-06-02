@@ -4,6 +4,7 @@ using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Policy.Domain;
 
 namespace Claim.Application.Queries.GetByPolicyId
 {

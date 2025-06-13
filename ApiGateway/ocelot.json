@@ -1,21 +1,24 @@
 {
   "GlobalConfiguration": {
-    "BaseURL": "http://localhost:5288"
+    "BaseUrl": "http://localhost:5288"
   },
   "Routes": [
-      {
-        "DownstreamPathTemplate": "/api/claims",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5172
-          }
-        ],
-        "UpstreamPathTemplate": "/claim",
-        "UpstreamHttpMethod": [ "Get", "Post" ]
-      },
-
+    {
+      "DownstreamPathTemplate": "/api/claims",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5172
+        }
+      ],
+      "UpstreamPathTemplate": "/claim",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "claim-api" ]
+      }
+    },
     {
       "DownstreamPathTemplate": "/api/claims/{PolicyId}",
       "DownstreamScheme": "http",
@@ -26,47 +29,59 @@
         }
       ],
       "UpstreamHttpMethod": [ "Get" ],
-      "UpstreamPathTemplate": "/claim/{PolicyId}"
-    },
-
-      {
-        "DownstreamPathTemplate": "/api/claims/{ClaimId}/Status",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5172
-          }
-        ],
-        "UpstreamPathTemplate": "/claim/{ClaimId}/Status",
-        "UpstreamHttpMethod": [ "Put" ]
-      },
-
-      {
-        "DownstreamPathTemplate": "/api/claims/{ClaimId}/Notes",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5172
-          }
-        ],
-        "UpstreamPathTemplate": "/claim/{ClaimId}/Notes",
-        "UpstreamHttpMethod": [ "Post" ]
-      },
-
-     {
-        "DownstreamPathTemplate": "/api/Policies/{everything}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5286
-          }
-        ],
-        "UpstreamPathTemplate": "/Policy/{everything}",
-        "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+      "UpstreamPathTemplate": "/claim/{Id}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "claim-api" ]
       }
-    
+    },
+    {
+      "DownstreamPathTemplate": "/api/claims/{ClaimId}/Status",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5172
+        }
+      ],
+      "UpstreamPathTemplate": "/claim/{ClaimId}/Status",
+      "UpstreamHttpMethod": [ "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "claim-api" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/claims/{ClaimId}/Notes",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5172
+        }
+      ],
+      "UpstreamPathTemplate": "/claim/{ClaimId}/Notes",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "claim-api" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Policies/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5286
+        }
+      ],
+      "UpstreamPathTemplate": "/Policy/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [ "policy-api" ]
+      }
+    }
   ]
 }
